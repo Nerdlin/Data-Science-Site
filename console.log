@@ -1,0 +1,15 @@
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    console.log(`Пользователь: ${username}, пытается войти.`);
+
+    // Логика аутентификации
+    res.json({ message: 'Логин успешен!' });
+});
+
+
+console.log("Полученный пользователь из БД:", user);
+console.log("Введённый пароль:", password);
+console.log("Токен:", token);
+
+
+console.log("JavaScript файл подключен!");

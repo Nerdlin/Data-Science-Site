@@ -1,0 +1,239 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    color: white;
+    overflow: hidden;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+body:hover {
+    overflow-y: auto;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: #0b1120;
+    position: relative;
+    color: #fff;
+}
+
+h1 .logo-yellow {
+    color: #f4b400;
+}
+
+.nav-container {
+    position: absolute;
+    right: 5%;
+}
+
+nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+nav:hover ul {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #f4b400;
+}
+
+.timeline {
+    padding: 40px 5%;
+}
+
+.timeline span {
+    color: #f4b400;
+}
+
+.timeline h2 {
+    font-size: 2.5em;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 40px;
+}
+
+.timeline-container {
+    position: relative;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.timeline-item {
+    padding: 10px 20px;
+    background: #222;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    border-left: 4px solid #f4b400;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: -8px;
+    width: 15px;
+    height: 15px;
+    background-color: #f4b400;
+    border-radius: 50%;
+}
+
+.timeline-year {
+    font-size: 1.2em;
+    color: #f4b400;
+    font-weight: bold;
+}
+
+.timeline-content {
+    font-size: 1em;
+    color: #ddd;
+    display: flex;
+    align-items: flex-start;
+}
+
+.timeline-content img {
+    width: 120px;
+    height: auto;
+    margin-right: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 10px;
+    background-color: #0b1120;
+    color: #fff;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    color: #f4b400;
+    opacity: 0;
+    transition: opacity 0.3s ease, text-shadow 0.3s ease;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.arrow-left {
+    left: 20px;
+}
+
+.arrow-right {
+    right: 20px;
+}
+
+.show-arrows .arrow {
+    opacity: 1;
+}
+
+.arrow:hover {
+    text-shadow: 0 0 10px #f4b400, 0 0 20px #f4b400, 0 0 30px #f4b400;
+}
+
+.nav-menu-item {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-menu-item:hover {
+    color: #f9c74f;
+}
+
+.nav-menu-item::after {
+    content: attr(data-hint);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+    margin-top: 5px;
+}
+
+.nav-menu-item:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(5px);
+}
+
+
+.nav-menu-item {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    animation: pulse-color 2s infinite;
+}
+
+@keyframes pulse-color {
+    0%, 100% {
+        color: white;
+    }
+    50% {
+        color: #f9c74f;
+    }
+}
+
+.nav-menu-item {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  
+  .nav-menu-item:focus {
+    outline: none;
+  }

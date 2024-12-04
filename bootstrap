@@ -1,0 +1,13 @@
+
+
+Подключение Bootstrap CSS нужно поставить в
+
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUa1ltOncOT+EAKx5j5BbVYUew37QFvwCGXjqAxDMBXx9tR9s7IJpiy0M+DI" crossorigin="anonymous">
+  </head>
+
+ Далее подключение Bootstrap JS нужно поставить в
+
+ <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+5q2c5iEjGoSgiB6HjMxQdf6Y7XH9" crossorigin="anonymous"></script>
+ </body>
