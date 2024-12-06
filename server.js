@@ -6,6 +6,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,7 +23,7 @@ app.use("/js", express.static(path.join(__dirname, "js")));
 app.use(cookieParser());
 app.use(cors({ origin: "http://127.0.0.1:5501", credentials: true }));
 
-const db = new sqlite3.Database("./users.db", (err) => {
+const db = new sqlite3.Database(process.env.DB_PATH, (err) => {
   if (err) console.error("Ошибка при открытии базы данных:", err.message);
   else console.log("Подключение к базе данных SQLite успешно");
 });
@@ -37,7 +40,7 @@ function authenticate(req, res, next) {
   }
 
   try {
-    jwt.verify(token, "secret_key");
+    jwt.verify(token, process.env.SECRET_KEY);
     next();
   } catch (err) {
     console.error("Ошибка проверки токена:", err.message);
@@ -53,7 +56,7 @@ app.get("/", (req, res) => {
   }
 
   try {
-    jwt.verify(token, "secret_key");
+    jwt.verify(token, process.env.SECRET_KEY);
     res.redirect("/index.html");
   } catch (err) {
     res.redirect("/login.html");
@@ -87,8 +90,6 @@ app.get("/register.html", (req, res) => {
 app.get("/skills.html", (req, res) => {
   res.sendFile(path.join(__dirname, "skills.html"));
 });
-
-
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -130,7 +131,7 @@ app.post("/login", (req, res) => {
       return res.status(400).send("Неверное имя пользователя или пароль");
     }
 
-    const token = jwt.sign({ username: user.username }, "secret_key", {
+    const token = jwt.sign({ username: user.username }, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
 
@@ -144,7 +145,8 @@ app.post("/logout", (req, res) => {
   res.redirect("/login.html");
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`Сервер запущен на http://localhost:${PORT}`);
+  console.log(`Сервер запущен на порту ${PORT}`);
 });
