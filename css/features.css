@@ -4,11 +4,11 @@ body {
     padding: 0;
     background-color: #111;
     color: white;
-    overflow: hidden;
+
 }
 
-body:hover {
-    overflow-y: auto;
+body::-webkit-scrollbar{
+    display: none;
 }
 
 header {
