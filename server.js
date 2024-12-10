@@ -125,29 +125,30 @@ app.post("/register", async (req, res) => {
 
 //! Роут для входа пользователя
 app.post("/login", (req, res) => {
-  const { username, password } = req.body; //! Получение данных из тела запроса
+  const { username, password, remember } = req.body; //! Получение данных из тела запроса
 
   const query = "SELECT * FROM users WHERE username = ?";
   db.get(query, [username], async (err, user) => {
     if (err) {
-      console.error("Ошибка при запросе к базе данных:", err.message); //! Ошибка базы данных
+      console.error("Ошибка при запросе к базе данных:", err.message);
       return res.status(500).send("Ошибка сервера");
     }
 
     if (!user) {
-      return res.status(400).send("Неверное имя пользователя или пароль"); //! Пользователь не найден
+      return res.status(400).send("Неверное имя пользователя или пароль");
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password); //! Проверка пароля
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).send("Неверное имя пользователя или пароль"); //! Неверный пароль
+      return res.status(400).send("Неверное имя пользователя или пароль");
     }
-
+    
+    //! Установка срока действия токена: 1 час или 30 дней
     const token = jwt.sign({ username: user.username }, process.env.SECRET_KEY, {
-      expiresIn: "1h", //! Токен действует 1 час
+      expiresIn: remember ? "30d" : "1h",
     });
 
-    res.cookie("token", token, { httpOnly: true }); //! Установка токена в куки
+    res.cookie("token", token, { httpOnly: true, maxAge: remember ? 30 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000 }); // maxAge для 30 дней
     res.redirect("/index.html"); //! Перенаправление на главную страницу
   });
 });
