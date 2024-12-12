@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сentral Learning</title>
-    <link rel="stylesheet" href="/css/index.css">
+    <title>Обратная связь</title>
+    <link rel="stylesheet" href="/css/feedback.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <h1><span class="logo-yellow">Center</span> <span class="logo-white">Data science</span></h1>
+        <h1><span class="logo-yellow">Свяжитесь</span> <span class="logo-white">с нами</span></h1>
         <nav class="nav-menu">
             <a href="index.html" class="nav-menu-item" data-hint="Перейти на главную">Главная</a>
             <a href="history.html" class="nav-menu-item" data-hint="Узнайте историю">История</a>
@@ -22,24 +22,21 @@
             </form>
         </nav>
     </header>
-
-    <section class="intro">
-        <h2><span class="logo-yellow">Технология</span> будущего</h2>
-        <h1><span class="logo-yellow">Data</span> Science</h1>
-        <p>Технология будущего уже здесь. Узнайте больше об Data science и его истории!</p>
-        <a href="/feedback" class="button">Обратная связь</a>
-
-    </section>
-
-    <div class="arrow arrow-right" id="navigateRight">→</div>
-    <script type="module">
-        import { navigateToNext } from "/js/index.js";
+    <main>
+        <form action="/submit_feedback" method="POST">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Электронная почта:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Сообщение:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="submit"class="nav-menu-item" data-hint="Отправить запрос">Отправить</button>
+        </form>
+    </main>
     
-        document.getElementById("navigateRight").addEventListener("click", navigateToNext);
-    </script>
-    
-    
-
     <footer>
         <p>© 2024 Data Science</p>
         <p>© Коваленко Илья и Медиханов Тимур</p>
@@ -48,7 +45,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/index.js" type="module"></script>
+    <script src="/js/feedback.js" type="module"></script>
 
     <script>
         document.querySelectorAll('a').forEach(link => {

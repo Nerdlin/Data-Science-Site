@@ -89,12 +89,17 @@ app.get("/features.html", authenticate, (req, res) => {
   res.sendFile(path.join(__dirname, "features.html"));
 });
 
+app.get("/feedback.html", authenticate, (req, res) => {
+  res.sendFile(path.join(__dirname, "feedback.html"));
+});
+
 app.get("/login.html", (req, res) => {
   res.sendFile(path.join(__dirname, "login.html")); //! Доступна без авторизации
 });
 
-app.get("/register.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "register.html")); //! Доступна без авторизации
+//! Добавлен GET-маршрут для /register
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "register.html")); //! Отображение страницы регистрации
 });
 
 app.get("/skills.html", (req, res) => {
@@ -107,6 +112,11 @@ app.post("/register", async (req, res) => {
 
   const checkQuery = "SELECT * FROM users WHERE username = ?";
   db.get(checkQuery, [username], async (err, user) => {
+    if (err) {
+      console.error("Ошибка при запросе к базе данных:", err.message);
+      return res.status(500).send({ message: "Ошибка сервера" });
+    }
+
     if (user) {
       return res.status(400).send({ message: "Пользователь уже существует" }); //! Проверка на уникальность
     }
@@ -142,7 +152,7 @@ app.post("/login", (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).send("Неверное имя пользователя или пароль");
     }
-    
+
     //! Установка срока действия токена: 1 час или 30 дней
     const token = jwt.sign({ username: user.username }, process.env.SECRET_KEY, {
       expiresIn: remember ? "30d" : "1h",
@@ -157,6 +167,19 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("token"); //! Удаление токена из куки
   res.redirect("/login.html"); //! Перенаправление на страницу логина
+});
+
+//! Роут для страницы обратной связи
+app.get("/feedback", authenticate, (req, res) => {
+  res.sendFile(path.join(__dirname, "feedback.html"));
+});
+
+//! Обработка данных обратной связи
+app.post("/submit_feedback", authenticate, (req, res) => {
+  const { name, email, message } = req.body;
+
+  console.log(`Новое сообщение от ${name} (${email}): ${message}`);
+  res.send("Спасибо за ваш отзыв!");
 });
 
 //! Настройка порта для сервера

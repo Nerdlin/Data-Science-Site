@@ -4,7 +4,7 @@ import cssnano from 'cssnano'; //! Подключение библиотеки c
 import postcss from 'postcss'; //! Cssnano работает через postcss
 
 const jsFiles = ['features.js', 'gallery.js', 'index.js', 'skills.js'];
-const cssFiles = ['features.css', 'gallery.css', 'index.css', 'skills.css'];
+const cssFiles = ['features.css', 'gallery.css', 'index.css', 'skills.css', 'feedback.css'];
 
 //! Минификация JS-файлов
 jsFiles.forEach(file => {

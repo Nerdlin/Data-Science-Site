@@ -7,10 +7,10 @@ body {
     transition: opacity 0.5s ease-in-out;
     opacity: 1;
     overflow: hidden;
-    background-image: url("../img/background.jpg"); /* Относительный путь */
-    background-size: cover; /* Растянуть изображение по размеру экрана */
-    background-repeat: no-repeat; /* Не повторять изображение */
-    background-attachment: fixed; /* Зафиксировать фон при прокрутке */
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: #fff; 
 }
 
