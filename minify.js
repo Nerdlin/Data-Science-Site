@@ -1,3 +1,4 @@
+//! Для улучшение адаптивности на разных устройствах
 import fs from 'fs'; //! Подключение модуля fs
 import uglifyJS from 'uglify-js'; //! Подключение библиотеки uglify-js
 import cssnano from 'cssnano'; //! Подключение библиотеки cssnano
