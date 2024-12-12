@@ -23,7 +23,7 @@
         </nav>
     </header>
     <main>
-        <form action="/submit_feedback" method="POST">
+        <form id="feedback-form" action="/submit_feedback" method="POST">
             <label for="name">Имя:</label>
             <input type="text" id="name" name="name" required>
             
@@ -33,7 +33,7 @@
             <label for="message">Сообщение:</label>
             <textarea id="message" name="message" required></textarea>
             
-            <button type="submit"class="nav-menu-item" data-hint="Отправить запрос">Отправить</button>
+            <button type="submit" class="nav-menu-item" data-hint="Отправить запрос">Отправить</button>
         </form>
     </main>
     

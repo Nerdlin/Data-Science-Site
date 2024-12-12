@@ -8,6 +8,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import fs from 'fs';
 
 //! Загрузка переменных окружения из файла .env
 dotenv.config();
@@ -35,9 +36,7 @@ const db = new sqlite3.Database(process.env.DB_PATH, (err) => {
 });
 
 //! Создание таблицы пользователей, если она не существует
-db.run(
-  "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT)"
-);
+db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT)");
 
 //! Middleware для проверки токена авторизации
 function authenticate(req, res, next) {
@@ -158,7 +157,7 @@ app.post("/login", (req, res) => {
       expiresIn: remember ? "30d" : "1h",
     });
 
-    res.cookie("token", token, { httpOnly: true, maxAge: remember ? 30 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000 }); // maxAge для 30 дней
+    res.cookie("token", token, { httpOnly: true, maxAge: remember ? 30 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000 }); //! maxAge для 30 дней
     res.redirect("/index.html"); //! Перенаправление на главную страницу
   });
 });
@@ -169,17 +168,37 @@ app.post("/logout", (req, res) => {
   res.redirect("/login.html"); //! Перенаправление на страницу логина
 });
 
+//! Создать папку для хранения JSON файлов, если она не существует
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir);
+}
+
 //! Роут для страницы обратной связи
 app.get("/feedback", authenticate, (req, res) => {
   res.sendFile(path.join(__dirname, "feedback.html"));
 });
 
-//! Обработка данных обратной связи
-app.post("/submit_feedback", authenticate, (req, res) => {
-  const { name, email, message } = req.body;
+//! Обработка маршрута для отправки отзывов
+app.post('/submit_feedback', (req, res) => {
+  const feedback = req.body;
+  const filePath = path.join(dataDir, 'feedback.json');
 
-  console.log(`Новое сообщение от ${name} (${email}): ${message}`);
-  res.send("Спасибо за ваш отзыв!");
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err && err.code !== 'ENOENT') {
+      return res.status(500).json({ message: 'Ошибка чтения файла' });
+    }
+
+    const feedbacks = data ? JSON.parse(data) : [];
+    feedbacks.push(feedback);
+
+    fs.writeFile(filePath, JSON.stringify(feedbacks, null, 2), (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Ошибка записи файла' });
+      }
+      res.status(200).json({ message: 'Отзыв сохранен' });
+    });
+  });
 });
 
 //! Настройка порта для сервера

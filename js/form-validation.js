@@ -27,3 +27,35 @@ document.querySelectorAll('form').forEach(form => {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const form = document.getElementById('feedback-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const feedback = {};
+
+        formData.forEach((value, key) => {
+            feedback[key] = value;
+        });
+
+        saveFeedback(feedback);
+    });
+
+    function saveFeedback(feedback) {
+        fetch('/submit_feedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(feedback)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Отзыв сохранен:', data);
+        })
+        .catch((error) => {
+            console.error('Ошибка при сохранении отзыва:', error);
+        });
+    }
+});
