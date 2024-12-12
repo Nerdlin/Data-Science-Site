@@ -171,7 +171,7 @@ app.post("/logout", (req, res) => {
 //! Создать папку для хранения JSON файлов, если она не существует
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir);
+    fs.mkdirSync(dataDir);
 }
 
 //! Роут для страницы обратной связи
@@ -182,22 +182,37 @@ app.get("/feedback", authenticate, (req, res) => {
 //! Обработка маршрута для отправки отзывов
 app.post('/submit_feedback', (req, res) => {
   const feedback = req.body;
+
+  if (!feedback.name || !feedback.email || !feedback.message) {
+      return res.status(400).json({ message: 'Все поля обязательны для заполнения' });
+  }
+
   const filePath = path.join(dataDir, 'feedback.json');
 
   fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err && err.code !== 'ENOENT') {
-      return res.status(500).json({ message: 'Ошибка чтения файла' });
-    }
-
-    const feedbacks = data ? JSON.parse(data) : [];
-    feedbacks.push(feedback);
-
-    fs.writeFile(filePath, JSON.stringify(feedbacks, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Ошибка записи файла' });
+      if (err && err.code !== 'ENOENT') {
+          console.error('Ошибка чтения файла:', err.message);
+          return res.status(500).json({ message: 'Ошибка чтения файла' });
       }
-      res.status(200).json({ message: 'Отзыв сохранен' });
-    });
+
+      let feedbacks = [];
+
+      try {
+          feedbacks = data ? JSON.parse(data) : [];
+      } catch (parseError) {
+          console.error('Ошибка парсинга JSON:', parseError.message);
+          return res.status(500).json({ message: 'Ошибка парсинга JSON' });
+      }
+
+      feedbacks.push(feedback);
+
+      fs.writeFile(filePath, JSON.stringify(feedbacks, null, 2), (writeErr) => {
+          if (writeErr) {
+              console.error('Ошибка записи файла:', writeErr.message);
+              return res.status(500).json({ message: 'Ошибка записи файла' });
+          }
+          res.status(200).json({ message: 'Отзыв сохранен' });
+      });
   });
 });
 
